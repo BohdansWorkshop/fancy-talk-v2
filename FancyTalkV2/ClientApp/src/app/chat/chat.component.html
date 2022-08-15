@@ -1,0 +1,45 @@
+<style>
+    .list-group-item{
+        border: none;
+    }
+    .list-group-item:hover {
+        cursor: pointer;
+        border:1px solid black;
+    }
+</style>
+<p>Welcome to FancyTalkV2, {{ currentUser.nickname }}!</p>
+
+<div class="row">
+    <div class="col-3">
+        <ul class="list-group list-group-light">
+            <li *ngFor="let groupName of groupList" class="list-group-item px-3" [ngClass]="groupName == currentGroup ? 'active' :  ''" (click)="onChatGroupSelected(groupName)">
+                {{groupName}}
+            </li>
+            <li class="list-group-item px-3" (click)="onLeaveChat()">
+                Leave Chat
+            </li>
+        </ul>
+    </div>
+    <div class="col">
+        <div class="container chat-container">
+            <div class="messaging" style="height:35rem; max-height: 35rem; overflow:overlay">
+                <div *ngFor="let message of messages" class="message-container" style="max-width: 75%; ">
+                    <div class="bubbleWrapper">
+                        <span [ngClass]="message.sentByMyself ? 'own' :  'other'">{{ message.author}}</span>
+                        <div [ngClass]="message.sentByMyself ? 'inlineContainer own' :  'inlineContainer'">
+                            <div [ngClass]="message.sentByMyself ? 'ownBubble own' :  'otherBubble other'">
+                                {{ message.text}}
+                            </div>
+                        </div>
+                        <span [ngClass]="message.sentByMyself ? 'own' :  'other'">{{ message.date }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message-text-area">Enter your message here:</label>
+                <textarea [(ngModel)]="text" class="form-control" id="message-text-area" rows="2" (keyup.enter)="sendMessage()"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
